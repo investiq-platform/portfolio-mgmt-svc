@@ -1,0 +1,10 @@
+type Query { funds(query: String!): [Fund!]! latestNav(schemeCode: ID!): Float! navHistory(schemeCode: ID!, limit: Int = 100): NavHistory! portfolio(id: ID!): Portfolio portfolios(page: Int = 0, size: Int = 20): [Portfolio!]! }
+type Mutation { createPortfolio(name: String!): Portfolio! recordTransaction(input: TransactionInput!): Portfolio! synchronizeFund(schemeCode: ID!): Ingestion! }
+type Fund { schemeCode: ID! schemeName: String! }
+type Ingestion { schemeCode: ID! schemeName: String! navRecordsReceived: Int! navRecordsUpserted: Int! }
+type NavHistory { schemeCode: ID! schemeName: String! navs: [NavPoint!]! }
+type NavPoint { navDate: String! nav: Float! }
+type Portfolio { id: ID! name: String! holdings: [Holding!]! }
+type Holding { schemeCode: ID! schemeName: String! units: Float! investedCost: Float! currentNav: Float! currentValue: Float! unrealizedGain: Float! allocationPercent: Float! }
+input TransactionInput { portfolioId: ID! schemeCode: ID! schemeName: String! type: TransactionType! units: Float! nav: Float! occurredOn: String }
+enum TransactionType { PURCHASE SIP REDEMPTION }
